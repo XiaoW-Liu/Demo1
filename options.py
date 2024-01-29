@@ -6,7 +6,7 @@ class TrainOptions():
 
     # data loader related
     self.parser.add_argument('--dataroot', type=str, default='./datasets', help='path of data')
-    self.parser.add_argument('--dataname', type=str, default='MSRS_no_rename', help='name of dataset')
+    self.parser.add_argument('--dataname', type=str, default='MSRS', help='name of dataset')
     self.parser.add_argument('--phase', type=str, default='train', help='phase for dataloading')
     self.parser.add_argument('--batch_size', type=int, default=10, help='batch size')
     self.parser.add_argument('--nThreads', type=int, default=16, help='# of threads for data loader')
@@ -21,7 +21,7 @@ class TrainOptions():
     self.parser.add_argument('--temp', default=2.0, type=float, help='temperature for DWA (must be positive)')    
     
     # ouptput related
-    self.parser.add_argument('--name', type=str, default='SDCFusion_re_header', help='folder name to save outputs')
+    self.parser.add_argument('--name', type=str, default='SDCFusion', help='folder name to save outputs')
     self.parser.add_argument('--class_nb', type=int, default=9, help='class number for segmentation model')
     self.parser.add_argument('--display_dir', type=str, default='./logs', help='path for saving display results')
     self.parser.add_argument('--result_dir', type=str, default='./results', help='path for saving result images and models')
@@ -52,12 +52,12 @@ class TestOptions():
     
     ## mode related
     self.parser.add_argument('--class_nb', type=int, default=9, help='class number for segmentation model')
-    self.parser.add_argument('--resume', type=str, default='./results/SDCFusion_re_header/fusion_'+ EPOCH + '.pth', help='specified the dir of saved models for resume the training')
+    self.parser.add_argument('--resume', type=str, default='./results/SDCFusion/fusion_'+ EPOCH + '.pth', help='specified the dir of saved models for resume the training')
     self.parser.add_argument('--gpu', type=int, default=0, help='GPU id')
     
     # results related
     self.parser.add_argument('--name', type=str, default='SDCFusion', help='folder name to save outputs')
-    self.parser.add_argument('--result_dir', type=str, default='/root/autodl-tmp/SDCFusion_re_header/epoch' + EPOCH + '/', help='path for saving result images and models')
+    self.parser.add_argument('--result_dir', type=str, default='/root/autodl-tmp/SDCFusion/epoch' + EPOCH + '/', help='path for saving result images and models')
     
   def parse(self):
     self.opt = self.parser.parse_args()
