@@ -45,7 +45,6 @@ class MSRSData(torch.utils.data.Dataset):
         label = self.imread(path=label_path, label=True)
      
         if self.is_train:
-            ## 训练图像进行一定的数据增强，包括翻转，旋转，以及随机裁剪等
             vis_ir = torch.cat([vis, ir, label],dim=1)
             if vis_ir.shape[-1]<=256 or vis_ir.shape[-2]<=256:
                 vis_ir=TF.resize(vis_ir,256)
@@ -55,8 +54,7 @@ class MSRSData(torch.utils.data.Dataset):
 
             vis, ir, label = torch.split(patch, [3, 1, 1], dim=1)
             label = label.type(torch.LongTensor)   
-
-            ## ir 单通道, vis RGB三通道
+            
             return ir.squeeze(0), vis.squeeze(0), label.squeeze(0)
         else: 
             label = label.type(torch.LongTensor)
@@ -108,10 +106,8 @@ class FusionData(torch.utils.data.Dataset):
     def imread(path, label=False, vis_flage=True):
         if label:
             img = Image.open(path)
-            # 获取图像大小
             width, height = img.size
 
-            # 调整图像大小到32的倍数
             new_width = width - (width % 32)
             new_height = height - (height % 32)
             img = img.resize((new_width, new_height))
@@ -119,20 +115,16 @@ class FusionData(torch.utils.data.Dataset):
         else:
             if vis_flage: ## visible images; RGB channel
                 img = Image.open(path).convert('RGB')
-                # 获取图像大小
                 width, height = img.size
 
-                # 调整图像大小到32的倍数
                 new_width = width - (width % 32)
                 new_height = height - (height % 32)
                 img = img.resize((new_width, new_height))
                 im_ts = TF.to_tensor(img).unsqueeze(0)
             else: ## infrared images single channel 
                 img = Image.open(path).convert('L') 
-                # 获取图像大小
                 width, height = img.size
 
-                # 调整图像大小到32的倍数
                 new_width = width - (width % 32)
                 new_height = height - (height % 32)
                 img = img.resize((new_width, new_height))
