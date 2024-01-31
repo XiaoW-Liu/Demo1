@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 import torch.nn.functional as F
-from Header import BiSeNet
 
 def RGB2YCrCb(rgb_image):
     R = rgb_image[:, 0:1]
@@ -122,8 +121,7 @@ class SDCFusion(nn.Module):
         )
         
         self.seg_decoder = SegD(2 * self.num_layers, self.num_layers)      
-        # self.classfier = SegHead(feature=self.num_layers, n_classes=n_classes) 
-        self.classfier = BiSeNet(n_classes)
+        self.classfier = SegHead(feature=self.num_layers, n_classes=n_classes) 
         
     def encoder(self, thermal, rgb):
         
@@ -163,7 +161,7 @@ class SDCFusion(nn.Module):
         sem_de2 = self.up_conv_sm2(torch.cat((sem_de3, sem3), 1))
         sem_de1 = self.up_conv_sm1(torch.cat((sem_de2, sem2), 1)) 
         seg_f = torch.cat((sem_de1, sem1), 1)
-        # seg_f = self.seg_decoder(seg_f)
+        seg_f = self.seg_decoder(seg_f)
         semantic_out = self.classfier(seg_f)
         
         return semantic_out
